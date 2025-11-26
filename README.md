@@ -153,12 +153,9 @@ meterpreter > download /etc/passwd
    - `sysinfo`, `getuid`, `download /etc/passwd` e outras ações do Meterpreter.
 
 ##  Considerações de segurança e boas práticas
-
-- Ambiente construído **apenas para fins educacionais**, com VMs vulneráveis em laboratório.
-- Boas práticas destacadas:
   - Nunca deixar **credenciais padrão** em consoles administrativos (como Tomcat Manager).
   - Manter servidores e frameworks web **atualizados**.
   - Restringir acesso ao Tomcat Manager a IPs confiáveis ou VPN.
   - Monitorar logs para detectar tentativas de upload e acessos suspeitos.
-- Mensagem final:
-  - O Metasploit é uma **ferramenta de teste**, não de abuso; o objetivo é **identificar e corrigir** vulnerabilidades em ambientes reais.
+
+
