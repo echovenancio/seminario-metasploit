@@ -242,19 +242,7 @@ Há várias aplicações e serviços vulneráveis expostos na máquina (ex.: TWi
 O que o Apache/Tomcat está servindo
 - Segundo o scan, o host executa **Apache HTTPD 2.2.8** (porta 80) e **Apache Tomcat/Coyote 5.5** (porta 8180) com AJP na porta 8009. Observou-se também aplicações web conhecidas em labs: `TWiki`, `phpMyAdmin`, `Mutillidae`, `DVWA` e um endpoint WebDAV — todas são aplicações intencionalmente vulneráveis em Metasploitable.
 
-Como explorar isso com o Metasploit (fluxo prático)
-1. Enumeração (sempre primeiro passo)
-   - Use módulos auxiliares HTTP do Metasploit para mapear o servidor e encontrar pontos de interesse:
-	 - `auxiliary/scanner/http/http_version` — confirma versão do servidor.
-	 - `auxiliary/scanner/http/dir_scanner` — procura diretórios e arquivos expostos (equivalente ao dirb/feroxbuster).
-	 - `auxiliary/scanner/http/http_login` — tenta logins em formulários (útil para `/phpmyadmin` ou `/manager/html`).
-   - Complemento externo: `nikto`, `dirb`/`gobuster` para enumeração de conteúdos e `zap`/`burp` para análise de aplicativos.
-
-2. Identificar serviços e pontos de upload
-   - Procure por páginas administrativas (ex.: `/phpmyadmin`, `/manager/html` do Tomcat), formulários de upload e endpoints WebDAV que aceitem PUT.
-   - Se houver WebDAV com permissões de PUT, é possível subir uma webshell (um arquivo PHP/ASP/JSP) e em seguida executá-la para obter um reverse shell (use `curl -X PUT` ou ferramentas HTTP). Em laboratório, isso ilustra upload direto sem exploits complexos.
-
-3. Exploração via Tomcat Manager (método Metasploit)
+Exploração via Tomcat Manager (método Metasploit)
    - Se o Tomcat Manager estiver acessível e for possível obter credenciais (ou se usar credenciais padrão), o Metasploit oferece o módulo `exploit/multi/http/tomcat_mgr_upload` para fazer upload de um WAR que pode executar um payload Java (ex.: `java/meterpreter/reverse_tcp`).
    - Exemplo resumido de comandos (ajuste `RHOSTS`/`LHOST`):
 
@@ -339,5 +327,6 @@ Abaixo segue a sequência usada na demonstração, com as imagens correspondente
 - Abrindo o `/etc/passwd` no atacante (captura `msfconsole_8.png`)
 
 	Depois do `download /etc/passwd` você pode abrir o arquivo localmente para mostrar o conteúdo:
+
 
 	![msfconsole_view_passwd](msfconsole_8.png)
