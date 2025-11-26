@@ -1,3 +1,10 @@
+# Memebros
+
+Gabriel Venancio Nunes
+Daniel de Abreu Macedo
+Guilherme Rocha Bezzera
+Bruno Oliveira Carvalho
+
 # Guia detalhado da demonstração (contexto e preparação)
 
 Este documento registra, em formato de relatório, todo o passo a passo que segui para montar o ambiente de laboratório, fazer a varredura com Nmap e explorar um serviço web vulnerável utilizando o Metasploit Framework. A ideia é que ele sirva tanto como registro técnico quanto como material de apoio para a apresentação, preenchendo as lacunas que não cabem no roteiro resumido do `README.md`.
@@ -353,3 +360,4 @@ Abaixo segue a sequência usada na demonstração, com as imagens correspondente
 
 
 	![msfconsole_view_passwd](msfconsole_8.png)
+
