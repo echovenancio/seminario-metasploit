@@ -61,10 +61,11 @@ nmap -sV -sC -O 192.168.0.60
 
 ##  Metasploit e enumeração de serviços web
 
-- Com o Nmap em mãos, usamos o Metasploit para refinar a enumeração web:
-  - `auxiliary/scanner/http/tomcat_mgr_login` → tenta descobrir credenciais do Tomcat Manager.
+- Depois do Nmap, usei o Metasploit para refinar a enumeração web do Tomcat:
+  - `auxiliary/scanner/http/dir_scanner` → listou diretórios interessantes na porta 8180, incluindo `/admin/`, `/jsp-examples/`, `/tomcat-docs/` e `/webdav/` (mostrados na imagem `tomcat_discovery.png`).
+  - `auxiliary/scanner/http/tomcat_mgr_login` → em seguida, usei este módulo para descobrir credenciais válidas do Tomcat Manager.
 - Intenção didática:
-  - Mostrar que **Metasploit não é só “dar exploit”**; ele também auxilia na **fase de reconhecimento**.
+  - Mostrar que **Metasploit não é só “dar exploit”**; ele também auxilia na **fase de reconhecimento**, desde a descoberta de diretórios até a obtenção de logins fracos.
 
 ##  Preparação do cenário no Kali (demonstração)
 
@@ -155,8 +156,3 @@ meterpreter > download /etc/passwd
   - Manter servidores e frameworks web **atualizados**.
   - Restringir acesso ao Tomcat Manager a IPs confiáveis ou VPN.
   - Monitorar logs para detectar tentativas de upload e acessos suspeitos.
-
-
-
-
-
