@@ -1,10 +1,10 @@
 # Memebros
 
-Gabriel Venancio Nunes 
+Gabriel Venancio Nunes; 
 
-Daniel de Abreu Macedo 
+Daniel de Abreu Macedo; 
 
-Guilherme Rocha Bezzera 
+Guilherme Rocha Bezzera; 
 
 Bruno Oliveira Carvalho 
 
@@ -363,5 +363,6 @@ Abaixo segue a sequência usada na demonstração, com as imagens correspondente
 
 
 	![msfconsole_view_passwd](msfconsole_8.png)
+
 
 
