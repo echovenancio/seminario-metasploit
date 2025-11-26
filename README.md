@@ -37,7 +37,7 @@
 
 - **VM Kali (atacante):**
   - Rodando em **modo bridge**.
-  - IP usado na demo: `172.24.101.240` (exibido no `ifconfig`, imagem `msfconsole_1.png`).
+  - IP usado na demo: `192.168.0.61` (exibido no `ifconfig`, imagem `msfconsole_1.png`).
 - **VM Metasploitable (alvo):**
   - Também em **modo bridge**.
   - IP descoberto via `ifconfig`: `192.168.0.60`.
@@ -157,5 +157,6 @@ meterpreter > download /etc/passwd
   - Manter servidores e frameworks web **atualizados**.
   - Restringir acesso ao Tomcat Manager a IPs confiáveis ou VPN.
   - Monitorar logs para detectar tentativas de upload e acessos suspeitos.
+
 
 
