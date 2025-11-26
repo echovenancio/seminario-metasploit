@@ -62,8 +62,6 @@ nmap -sV -sC -O 192.168.0.60
 ##  Metasploit e enumeração de serviços web
 
 - Com o Nmap em mãos, usamos o Metasploit para refinar a enumeração web:
-  - `auxiliary/scanner/http/http_version` → confirma versão do servidor HTTP.
-  - `auxiliary/scanner/http/dir_scanner` → descobre diretórios e apps (ex.: `/mutillidae/`, `/phpmyadmin/`, `/manager/html`).
   - `auxiliary/scanner/http/tomcat_mgr_login` → tenta descobrir credenciais do Tomcat Manager.
 - Intenção didática:
   - Mostrar que **Metasploit não é só “dar exploit”**; ele também auxilia na **fase de reconhecimento**.
@@ -157,6 +155,7 @@ meterpreter > download /etc/passwd
   - Manter servidores e frameworks web **atualizados**.
   - Restringir acesso ao Tomcat Manager a IPs confiáveis ou VPN.
   - Monitorar logs para detectar tentativas de upload e acessos suspeitos.
+
 
 
 
